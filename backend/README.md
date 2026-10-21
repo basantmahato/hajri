@@ -106,3 +106,37 @@ npm run build
 # Start production
 npm start
 ```
+
+## Google and phone sign-in
+
+The backend exposes Better Auth at `/api/auth/*`; Google and phone-number OTP
+sign-in are enabled, and email/password authentication is disabled. The previous
+`/api/v1/auth/register` and `/api/v1/auth/login` endpoints are no longer mounted.
+
+1. Copy `.env.example` to `.env` and set `DATABASE_URL`, `BETTER_AUTH_URL`,
+   `BETTER_AUTH_SECRET`, `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, and
+   `FRONTEND_URL`. For phone OTP, also set `MSG91_AUTH_KEY` and
+   `MSG91_OTP_TEMPLATE_ID`. Generate a Better Auth secret with
+   `node -e "console.log(require('node:crypto').randomBytes(32).toString('base64url'))"`.
+2. In Google Cloud Console, add
+   `${BETTER_AUTH_URL}/api/auth/callback/google` as an authorized redirect URI.
+   For the default local URL, this is
+   `http://localhost:3000/api/auth/callback/google`.
+3. In MSG91, create and approve an OTP template containing the OTP placeholder,
+   then copy its Auth Key and template ID into `.env`. For Indian SMS delivery,
+   complete MSG91's sender ID and DLT/template registration requirements.
+4. Apply the Better Auth and phone-number migrations:
+
+   ```bash
+   npm run db:migrate
+   ```
+
+The Better Auth identity tables (`user`, `session`, `account`, and
+`verification`) are separate from the application's existing `users` table;
+mapping Google identities to application users and roles remains an application
+integration step. Phone OTP sign-up creates a Better Auth user with a generated
+placeholder email; connect that identity to an application user before relying
+on app-specific roles or employee records.
+
+Auth rate limiting uses Express's resolved client IP. If the backend is deployed
+behind a reverse proxy, configure Express to trust only the actual proxy hops.

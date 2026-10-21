@@ -15,6 +15,27 @@
       "when": 1792036140855,
       "tag": "0001_cultured_leo",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1792047677166,
+      "tag": "0002_better-auth",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1792059077666,
+      "tag": "0003_phone-number",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1792302765075,
+      "tag": "0004_wandering_gambit",
+      "breakpoints": true
     }
   ]
 }

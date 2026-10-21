@@ -1,10 +1,10 @@
 import { pgTable, serial, text, timestamp, integer, varchar, boolean, time } from 'drizzle-orm/pg-core';
-import { employees } from './employees.schema';
-import { organizations } from './organizations.schema';
+import { users } from './users.schema.js';
+import { organizations } from './organizations.schema.js';
 
 export const attendance = pgTable('attendance', {
   id: serial('id').primaryKey(),
-  employeeId: integer('employee_id').notNull().references(() => employees.id, { onDelete: 'cascade' }),
+  userId: integer('user_id').notNull().references(() => users.id, { onDelete: 'cascade' }),
   organizationId: integer('organization_id').notNull().references(() => organizations.id, { onDelete: 'cascade' }),
   date: timestamp('date').notNull(),
   checkInTime: time('check_in_time'),
@@ -18,7 +18,7 @@ export const attendance = pgTable('attendance', {
   overtimeHours: varchar('overtime_hours', { length: 10 }),
   notes: text('notes'),
   isLate: boolean('is_late').notNull().default(false),
-  approvedBy: integer('approved_by').references(() => employees.id, { onDelete: 'set null' }),
+  approvedBy: integer('approved_by').references(() => users.id, { onDelete: 'set null' }),
   approvedAt: timestamp('approved_at'),
   createdAt: timestamp('created_at').notNull().defaultNow(),
   updatedAt: timestamp('updated_at').notNull().defaultNow(),

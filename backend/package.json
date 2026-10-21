@@ -6,15 +6,19 @@
   "scripts": {
     "build": "tsc",
     "start": "node dist/app.js",
-    "dev": "tsx src/app.ts",
-    "dev:watch": "nodemon --exec tsx src/app.ts"
+    "dev": "tsx watch src/app.ts",
+    "dev:watch": "tsx watch src/app.ts",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit migrate"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "commonjs",
+  "type": "module",
   "dependencies": {
+    "@better-auth/drizzle-adapter": "^1.7.9",
     "bcrypt": "^6.0.0",
+    "better-auth": "^1.7.9",
     "compression": "^1.8.2",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.6",

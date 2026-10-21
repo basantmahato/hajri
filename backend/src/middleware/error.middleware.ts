@@ -5,9 +5,11 @@ export const errorHandler = (logger: Logger) => {
   return (err: Error, _req: Request, res: Response, _next: NextFunction): void => {
     logger.error(err);
 
-    if (err.name === 'ZodError') {
+    if (err.name === 'ZodError' || (err as any).issues) {
+      const issues = (err as any).issues || [];
+      const errorMsg = issues.map((i: any) => `${i.path.join('.') || 'body'}: ${i.message}`).join(', ') || 'Validation error';
       res.status(400).json({
-        error: 'Validation error',
+        error: errorMsg,
         details: err.message,
       });
       return;

@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import type { Request, Response, NextFunction } from 'express';
-import type { AuthService } from '../services/auth.service';
-import type { CreateUserDto, LoginDto } from '../types/user.types';
+import type { AuthService } from '../services/auth.service.js';
+import type { CreateUserDto, LoginDto } from '../types/user.types.js';
 
 const registerSchema = z.object({
   email: z.string().email(),

@@ -1,5 +1,5 @@
 import { pgTable, serial, text, timestamp, decimal, integer, varchar, boolean } from 'drizzle-orm/pg-core';
-import { users } from './users.schema';
+import { users } from './users.schema.js';
 
 export const orders = pgTable('orders', {
   id: serial('id').primaryKey(),

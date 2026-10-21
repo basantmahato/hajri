@@ -1,7 +1,7 @@
-import { eq } from 'drizzle-orm';
-import { users } from '../models';
-import type { DrizzleDB } from '../config/database';
-import type { User, CreateUserDto } from '../types/user.types';
+import { eq, or, ilike } from 'drizzle-orm';
+import { users } from '../models/index.js';
+import type { DrizzleDB } from '../config/database.js';
+import type { User, CreateUserDto } from '../types/user.types.js';
 
 export class UserRepository {
   constructor(private db: DrizzleDB) {}
@@ -11,6 +11,16 @@ export class UserRepository {
       .select()
       .from(users)
       .where(eq(users.email, email))
+      .limit(1);
+
+    return result[0] || null;
+  }
+
+  async findByPhone(phone: string): Promise<User | null> {
+    const result = await this.db
+      .select()
+      .from(users)
+      .where(eq(users.phone, phone))
       .limit(1);
 
     return result[0] || null;
@@ -26,6 +36,21 @@ export class UserRepository {
     return result[0] || null;
   }
 
+  async search(query: string): Promise<User[]> {
+    const pattern = `%${query}%`;
+    return this.db
+      .select()
+      .from(users)
+      .where(
+        or(
+          ilike(users.name, pattern),
+          ilike(users.email, pattern),
+          ilike(users.phone, pattern),
+        ),
+      )
+      .limit(20);
+  }
+
   async create(data: CreateUserDto): Promise<User> {
     const [user] = await this.db
       .insert(users)
@@ -33,6 +58,9 @@ export class UserRepository {
         email: data.email,
         password: data.password,
         name: data.name,
+        phone: data.phone ?? null,
+        avatar: data.avatar ?? null,
+        role: data.role || 'user',
       })
       .returning();
 

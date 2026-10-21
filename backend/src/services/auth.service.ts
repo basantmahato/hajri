@@ -1,7 +1,7 @@
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
-import type { UserRepository } from '../repository/user.repository';
-import type { CreateUserDto, LoginDto, AuthResponse } from '../types/user.types';
+import type { UserRepository } from '../repository/user.repository.js';
+import type { CreateUserDto, LoginDto, AuthResponse } from '../types/user.types.js';
 
 export class AuthService {
   private readonly SALT_ROUNDS = 10;
@@ -30,6 +30,12 @@ export class AuthService {
         id: user.id,
         email: user.email,
         name: user.name,
+        phone: user.phone,
+        avatar: user.avatar,
+        role: user.role,
+        isActive: user.isActive,
+        isEmailVerified: user.isEmailVerified,
+        lastLoginAt: user.lastLoginAt,
         createdAt: user.createdAt,
         updatedAt: user.updatedAt,
       },
@@ -55,6 +61,12 @@ export class AuthService {
         id: user.id,
         email: user.email,
         name: user.name,
+        phone: user.phone,
+        avatar: user.avatar,
+        role: user.role,
+        isActive: user.isActive,
+        isEmailVerified: user.isEmailVerified,
+        lastLoginAt: user.lastLoginAt,
         createdAt: user.createdAt,
         updatedAt: user.updatedAt,
       },

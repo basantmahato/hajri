@@ -1,4 +1,5 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+Hajri's frontend is a [Next.js](https://nextjs.org) app with Better Auth
+Google/phone OTP sign-in and an Axios API client.
 
 ## Getting Started
 
@@ -14,7 +15,18 @@ pnpm dev
 bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Copy `.env.example` to `.env.local` and set `NEXT_PUBLIC_API_URL` to the backend
+URL (default `http://localhost:3000`). Start the backend first, then run
+`npm run dev` in this folder. The frontend runs at `http://localhost:3001` to
+avoid conflicting with the backend; configure the backend's `FRONTEND_URL` to
+match if you change the frontend port.
+
+Open the URL printed by Next.js to use the sign-in page. Phone sign-in requires
+MSG91 Auth Key and OTP template ID configured in the backend, with a six-digit
+OTP template. The backend validates phone numbers in international E.164 format
+(for example `+919876543210`). Google sign-in requires Google OAuth credentials
+and an authorized redirect URI of
+`http://localhost:3000/api/auth/callback/google` for local development.
 
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 

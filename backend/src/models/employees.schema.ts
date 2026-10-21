@@ -1,6 +1,6 @@
-import { pgTable, serial, text, timestamp, integer, varchar, boolean, decimal, date } from 'drizzle-orm/pg-core';
-import { users } from './users.schema';
-import { organizations } from './organizations.schema';
+import { pgTable, serial, text, timestamp, integer, varchar, boolean, decimal, date, type AnyPgColumn } from 'drizzle-orm/pg-core';
+import { users } from './users.schema.js';
+import { organizations } from './organizations.schema.js';
 
 export const employees = pgTable('employees', {
   id: serial('id').primaryKey(),
@@ -26,7 +26,7 @@ export const employees = pgTable('employees', {
   salaryType: text('salary_type').notNull().default('monthly'), // monthly, daily, hourly
   workDays: text('work_days'), // JSON array: ["monday", "tuesday", ...]
   workHours: varchar('work_hours', { length: 10 }), // "9:00-18:00"
-  managerId: integer('manager_id').references(() => employees.id, { onDelete: 'set null' }),
+  managerId: integer('manager_id').references((): AnyPgColumn => employees.id, { onDelete: 'set null' }),
   emergencyContactName: text('emergency_contact_name'),
   emergencyContactPhone: varchar('emergency_contact_phone', { length: 20 }),
   emergencyContactRelation: text('emergency_contact_relation'),
